@@ -21,5 +21,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        //memanggil IntialBalanceSeeder agar bisa di eksekusi
+        $this->call([
+            InitialBalanceSeeder::class,
+        ]);
     }
+
 }
