@@ -25,6 +25,13 @@
                                 {{ $lowStockCount }} <span class="text-lg">Barang</span>
                             </h2>
                         </div>
+
+                        <div class="bg-blue-100 p-4 rounded-lg border border-blue-200">
+                            <p class="text-sm text-blue-600 font-semibold">Total Penjualan Hari Ini</p>
+                            <h2 class="text-3xl font-bold text-blue-700">
+                                Rp {{ number_format($todaySales, 0, ',', '.') }}
+                            </h2>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
         //memanggil IntialBalanceSeeder agar bisa di eksekusi
         $this->call([
-            InitialBalanceSeeder::class,
+            // InitialBalanceSeeder::class,
             UnitSeeder::class,
         ]);
     }
