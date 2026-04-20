@@ -16,7 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('name'); //nama product
             $table->integer('stock')->default(0); //stock product
-            $table->string('unit')->default('pcs'); //satuan product
+            $table->foreignId('unit_id')->constrained('units')->onDelete('cascade'); //satuan product
+            
             $table->decimal('base_price', 12, 2)->default(0); //harga beli
             $table->decimal('selling_price', 12, 2)->default(0);//harga jual
             $table->integer('min_stock')->default(3); //stok minimal untuk alert
