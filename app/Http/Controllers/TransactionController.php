@@ -53,22 +53,23 @@ class TransactionController extends Controller
                 ]);
                 //D. Potong Stock Barang
                 $product->decrement('stock', $item['qty']);
-                //E. Catat ke uang kas(Cash Flow)
-
-                //1. kita ambil saldo terakhir
-                // $lastCash = CashFlow::latest('id')->first();
-                $lastCash = CashFlow::orderBy('id', 'desc')->first();
-                $lastBalance = $lastCash ? $lastCash->current_balance : 0;
-                //2. hitung saldo baru
-                $newBalance = $lastBalance + $request->total_price;
-                //3. Catat ke table Cash Flow sesuai $fillable model 
-                CashFlow::create([
-                    'type' => 'income',
-                    'amount' => $request->total_price,
-                    'description' => 'Penjualan Nota #' . $transaction->id,
-                    'current_balance' => $newBalance,
-                ]);
             }
+
+            //E. Catat ke uang kas(Cash Flow) HANYA SEKALI PER TRANSAKSI
+            //1. Cari baris terakhir di tabel cash_flows untuk dapat saldo paling update
+            $lastCash = CashFlow::orderBy('id', 'desc')->first();
+            //2. Ambil nilai current_balance-nya. Kalau belum ada data sama sekali, set ke 0.
+            $lastBalance = $lastCash ? $lastCash->current_balance : 0;
+            //3. LOGIKA KRUSIAL: Saldo baru adalah Saldo Terakhir + Total Belanja Sekarang
+            $newBalance = $lastBalance + $request->total_price;
+            //4. Catat ke table Cash Flow sesuai $fillable model 
+            CashFlow::create([
+                'type' => 'income',
+                'amount' => $request->total_price,
+                'description' => 'Penjualan Nota #' . $transaction->id,
+                'current_balance' => $newBalance,
+            ]);
+            
             DB::commit();
             return redirect()->route('transactions.index')->with('success', 'Transaksi Berhasil');
         } catch (\Exception $e) {

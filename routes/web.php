@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController; // Siapkan untuk kasir
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Transactions / Kasir
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+
+    //report
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
     // Profile
     Route::controller(ProfileController::class)->group(function () {
